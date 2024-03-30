@@ -90,6 +90,24 @@ A return to libc attack involves overwriting the return address of a vulnerable 
 
 ![Ret2libc_diagram](https://www.ired.team/~gitbook/image?url=https:%2F%2F386337598-files.gitbook.io%2F%7E%2Ffiles%2Fv0%2Fb%2Fgitbook-legacy-files%2Fo%2Fassets%252F-LFEMnER3fywgFHoroYn%252F-MXwAmlrjE8Ejl_0OQQX%252F-MY1FO9lURZfx9fTrAf0%252Fimage.png%3Falt=media%26token=39659182-e3ff-4d34-a031-c7091567890a&width=768&dpr=1&quality=100&sign=f88dacfcb566be08069d8a02d879238cc162108931a57324e2a75c7e5ed31fa7)
 
+
+#### How to perform ret2libc exploit
+1. Find the adress of the function we want to call: `system()`
+2. Determine the address of required data: `/bin/sh`
+3. Craft the payload: construct a payload that overflow the buffer, modifies the return address on the stack to point to the desired function in `libc`
+4. exploit
+
+```
+| buffer (input)      |
+|---------------------|
+|    AAAA...AAAA      |
+| system() address    |
+| exit() address      |
+| /bin/sh address     |
+|---------------------|
+|     return address  |
+```
+
 **Finding system():**
 In GDB, we can use the p command to print the memory address of the system function:
 ```
