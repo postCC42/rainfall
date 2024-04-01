@@ -14,6 +14,7 @@ Cutter is a graphical user interface (GUI) for the radare2 reverse engineering f
 
 ## Doc
 - [EXPLOITATION DE STACK BUFFER OVERFLOW - YouTube](https://www.youtube.com/watch?v=Uk-xv8uxiJo)
+- [STACK ESP EIP - YouTube](https://www.youtube.com/watch?v=RU5vUIl1vRs)
 ### Return to libc
 - [Ret2libc](https://www.ired.team/offensive-security/code-injection-process-injection/binary-exploitation/return-to-libc-ret2libc)
 - [28553-linux-classic-return-to-libc-&-return-to-libc-chaining-tutorial.pdf](https://www.exploit-db.com/docs/english/28553-linux-classic-return-to-libc-&-return-to-libc-chaining-tutorial.pdf)
