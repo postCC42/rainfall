@@ -3,6 +3,7 @@ This project is an introduction to the exploitation of (elf-like) binary.
 
 ## Levels
 - [level0](./level0/walkthrough.md)
+- [level1](./level1/walkthrough.md)
 - [level2](./level2/walkthrough.md)
 
 ## Tools
