@@ -1,8 +1,8 @@
-# Level 0
+# Level 1
 
 ## First clue
-- once logged in as level1 a simple `ls -la`reveals the existence of a `level1` file, owned by `level2`:
-- `level2` is an executable
+- once logged in as level1 we find a `level1` file, owned by `level2`:
+- `level1` is an executable
 - we try to execute it without arguments and we get the prompt back
 - nothing happens if we write something
 
