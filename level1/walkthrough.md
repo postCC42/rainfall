@@ -49,8 +49,8 @@ Non-debugging symbols:
 End of assembler dump.
 
 ```
-- <+6> is substracting 80 bytes from the register `esp`, that is the variable that the CPU uses to keep track of the last procedure executed. This instruction allocate 80 bytes in the stack for a variable
-- <+16> is calling the `gets()` function using as argument the buffer of which the address has been pushed onto the stack in the previous instruction (+13), as usual just before the calling of a function
+- <+6> subtracts 80 bytes from the esp register, which is the variable used by the CPU to keep track of the stack pointer. This instruction allocates 80 bytes on the stack for a variable.
+- <+16> calls the gets() function, using as an argument the buffer whose address has been pushed onto the stack in the previous instruction (+13), as is customary just before calling a function.
 - <+21> and <+22> restore the control flow back to the runtime where the main function had been called, effectively updating the instruction pointer (eip) with the address stored in the return address located in the stack frame.
 - the return is where we can operate, because we want to overwrite the return address (stored in `eip`) taking advantage of the fct that the gets() function doesnt't check the length of the buffer and if we write in the buffer a number of bytes higher than what the program has allocate we can rite directly in the `eip`
 - to do that we need 2 things: 
