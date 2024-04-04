@@ -1,7 +1,7 @@
-# Level 4
+# Level 5
 
 ## First clue
-- once logged in as level4 we find again an executable, `level4` owned by `level5` and the SUID (SET USER ID) bit set(indicated by the s in place of the execute permission for the owner (rws)) that means that when anyone execute the file it will run with the privileges of level5, not the person executing it
+- once logged in as level4 we find again an executable with the same behavior of ./level4, `level5` owned by `level6` and the SUID (SET USER ID) bit set(indicated by the s in place of the execute permission for the owner (rws)) that means that when anyone execute the file it will run with the privileges of level5, not the person executing it
 - we try to execute it without arguments and we get the prompt back
 - if we write something, that something is copied back as output
 
