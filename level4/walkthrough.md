@@ -106,7 +106,7 @@ We can exploit a format string vulnerability. How?
 If we find a way for function p to return value 16930116n we get true and the system call is triggered. 
 
 ## Finding Buffer Position: 
-We first find the position of our buffer in memory by injecting format specifiers into the input string and observing the output. For example:
+We first find the position of our buffer in memory by injecting format specifiers into the input string and observing the output.
 
 
 `python -c 'print "aaaa" + " %x" * 15' | ./level4`

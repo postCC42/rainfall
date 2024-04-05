@@ -89,7 +89,7 @@ If we inspect the argument passed to the system call we get this:
 0x80485b0:	 "/bin/cat /home/user/level7/.pass"
 ```
 - this is the reason why we need to find a way to execute function n.
-- Function n addressn as it appears in `info function` is `0x08048468`
+- Function n addressn as it appears in `info function` is `0x08048454`
 - if we find the offset of the buffer of strcpy in main and place in the return of main the address of n, insteadd of returning we execute the n function.
 
 ## Exploit
