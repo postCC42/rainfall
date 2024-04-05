@@ -7,6 +7,7 @@ This project is an introduction to the exploitation of (elf-like) binary.
 - [level2](./level2/walkthrough.md)
 - [level4](./level4/walkthrough.md)
 - [level5](./level5/walkthrough.md)
+- [level6](./level6/walkthrough.md)
 
 ## Tools
 ### Cutter
