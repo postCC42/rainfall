@@ -96,6 +96,9 @@ level3@RainFall:~$ cat /tmp/exploit | ./level3
 **Crafting the payload:**
 We need to write a total of 64 bytes and use the `%n` format to output to the variable `m`
 
+`%n` will write the size of our input at the address pointed by `%n`. For example, the following input : `AAAA%n`, means that we will write the value 4 (because the size of “AAAA” equals 4) at the address pointed by %n.
+- We can specify a postion to read/write on the stack with `%<num>$n`
+
 ```
 \x8c\x98\x04\x08   AAAAAAAA...AAAA    %4$n
 |----------------|------------------|
@@ -116,3 +119,4 @@ b209ea91ad69ef36f2cf0fcbbc24c739fd10464cf545b20bea8572ebdc3c36fa
 
 ## Ressources
 [OWASP - format string attack](https://owasp.org/www-community/attacks/Format_string_attack)
+[Exploit 101 - Format Strings - BreakInSecurity](https://axcheron.github.io/exploit-101-format-strings/)
