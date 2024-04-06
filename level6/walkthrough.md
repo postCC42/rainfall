@@ -6,7 +6,7 @@
 - if we write one or more alpha and numeric argiments, we get back `Nope`
 
 ## Inspect with gdb
-- Info function reveals main, n and m functions, but also a system call, malloc and strcpy. 
+- `(gdb) info function` reveals main, n and m functions, but also a system call, malloc and strcpy. 
 ```
 0x080482f4  _init
 0x08048340  strcpy

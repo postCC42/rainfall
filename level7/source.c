@@ -1,40 +1,41 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
+#include <time.h>
 
-typedef void(*func_ptr)(void);
+/*
+In the main function, the fgets function is called with the arg:
 
-void	n(void)
-{
-	system("/bin/cat /home/user/level7/.pass");
-}
+Buffer pointer: 0x8049960
+Buffer size: 0x44 (68 in decimal)
+so c is 68 bytes
+*/
+char	c[68];  
 
 void	m(void)
 {
-	puts("Nope");
+	printf("%s - %d\n", c, (int)time(0));
 }
 
 int		main(int ac, char **av)
 {
-	char		*arg;
-	func_ptr	*func;
+	int		*a;
+	int		*b;
 
-	arg = malloc(64);
-	func = malloc(4);
+	a = malloc(8);
+	a[0] = 1;
+	a[1] = (int)malloc(8);
 
-	/*
-		0x080484a5 <+41>:    mov    edx,0x8048468
-		0x080484aa <+46>:    mov    eax,DWORD PTR [esp+0x18]
-		0x080484ae <+50>:    mov    DWORD PTR [eax],edx
-	*/
-	*func = (void *)m;
-	strcpy(arg, av[1]);
-	/*
-		0x080484ca <+78>:    mov    eax,DWORD PTR [esp+0x18]
-		0x080484ce <+82>:    mov    eax,DWORD PTR [eax]
-		0x080484d0 <+84>:    call   eax
-	*/
-	(**func)();
+	b = malloc(8);
+	b[0] = 2;
+	b[1] = (int)malloc(8);
+
+	strcpy((char *)a[1], av[1]);
+	strcpy((char *)b[1], av[2]);
+	
+	fgets(c, 68, fopen("/home/user/level8/.pass", "r"));
+
+	puts("~~");
 
 	return (0);
 }
