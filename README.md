@@ -32,3 +32,6 @@ Cutter is a graphical user interface (GUI) for the radare2 reverse engineering f
 - [OWASP - format string attack](https://owasp.org/www-community/attacks/Format_string_attack)
 - [Exploit 101 - Format Strings - BreakInSecurity](https://axcheron.github.io/exploit-101-format-strings/)
 - [A simple Format String exploit example](https://www.youtube.com/watch?v=0WvrSfcdq1I)
+
+### Training
+- [microcorruption](https://microcorruption.com/about)
