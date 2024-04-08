@@ -22,6 +22,7 @@ Cutter is a graphical user interface (GUI) for the radare2 reverse engineering f
 - [GO TO assembly programming section](https://sockpuppet.org/issue-79-file-0xb-foxport-hht-hacking.txt.html)
 - [EXPLOITATION DE STACK BUFFER OVERFLOW - YouTube](https://www.youtube.com/watch?v=Uk-xv8uxiJo)
 - [STACK ESP EIP - YouTube](https://www.youtube.com/watch?v=RU5vUIl1vRs)
+- [Introduction to Assembler - YouTube](https://www.youtube.com/watch?v=6jSKldt7Eqs)
 
 ### Return to libc
 - [Ret2libc](https://www.ired.team/offensive-security/code-injection-process-injection/binary-exploitation/return-to-libc-ret2libc)
