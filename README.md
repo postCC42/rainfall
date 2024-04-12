@@ -12,6 +12,9 @@ This project is an introduction to the exploitation of (elf-like) binary.
 - [level7](./level7/walkthrough.md)
 - [level8](./level8/walkthrough.md)
 
+
+- [bonus0](./bonus0/walkthrough.md)
+
 ## Tools
 ### Cutter
 Cutter is a graphical user interface (GUI) for the radare2 reverse engineering framework. It provides a user-friendly environment for analyzing and reverse engineering binary files, executables, and libraries.
