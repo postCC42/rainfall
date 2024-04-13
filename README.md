@@ -14,6 +14,7 @@ This project is an introduction to the exploitation of (elf-like) binary.
 
 
 - [bonus0](./bonus0/walkthrough.md)
+- [bonus1](./bonus1/walkthrough.md)
 
 ## Tools
 ### Cutter
