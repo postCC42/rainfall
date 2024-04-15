@@ -1,9 +1,21 @@
 # Level 9
 
 ## First clue
+- once logged in as level9 we find again an executable  owned by `bonus0` 
+- we try to execute it with or without arguments and nothinh happens
 
 ## Analysis
-If we disas the main function there are 2 lines, and what is between them, that are importat for us because they are the key to uderstand how we can exploit the bufferoverflow to call the shellcode:
+- `(gdb) ìnfo functions` reveals that the binary is written in cpp and there are 5 functions:
+```
+N::N(int)
+N::setAnnotation(char*)
+N::operator+(N&)
+N::operator-(N&)
+main
+```
+- there is no calls to /bin/sh
+- so we need to call the shellcode by ourselves
+- If we disas the main function there are 2 lines, and what is between them, that are importat for us because they are the key to uderstand how we can exploit the bufferoverflow to call the shellcode:
 - `0x08048677 <+131>:	call   0x804870e <_ZN1N13setAnnotationEPc>` => this instruction calls the setAnnotation function, passing it a pointer to a character array (EPc likely denotes a pointer to a character array). The setAnnotation function does strlen the string passed as argument and copy it without bounce chacking into the buffer (using memcpy), as we can see disassemblying the setAnnotation function (`disas 0x804870e`). That means that we can bufferoverflow the return of setAnnotation.
 - `0x08048693 <+159>:	call   *%edx`=> This is the crucial instruction where the program makes a call using the value in edx. Since edx was previously loaded with the value pointed to by esp + 0x10, this effectively means the program is making a call to the address stored at esp + 0x10. This is where where we want to store the shellcode.
 
