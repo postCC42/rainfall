@@ -116,7 +116,9 @@ We first find the position of our buffer in memory by injecting format specifier
 Once we know the buffer's position (12), we construct an input string that manipulates the return value of function p to 16930116. This is done by padding the memory address of the variable m and using the %n format specifier.
 
 `python -c 'print "\x10\x98\x04\x08" + "%16930112d%12$n"' | ./level4`
-Here, "\x10\x98\x04\x08" represents the memory address of m, and %16930112d pads the address, while %12$n writes the number of characters processed so far to the address pointed to by the 12th argument.
+- "\x10\x98\x04\x08" represents the memory address of m
+- %16930112d: This specifies a format specifier %d with a very large field width (16930112). This causes printf to print a large number of characters to satisfy the format specifier.
+- %12$n: This specifies that the number of characters printed so far (%n) should be written to the memory location specified by the 12th argument passed to printf (12$).
 
 ## Triggering System Call
 With the return value manipulated, the comparison in function n will evaluate to true, triggering the system call that directly print the /level5/.pass containing the flag
