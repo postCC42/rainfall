@@ -104,7 +104,13 @@
 Disassemblying main we find out that:
 - The program takes 2 arguments.
 - It opens a file using the fopen function.
-- The file being opened is identified as "/home/user/level8/.pass".
+- The file being opened is identified as "/home/user/level8/.pass":
+```
+(gdb)$ x/s 0x80486e9
+0x80486e9:	"r"
+(gdb)$ x/s 0x80486eb
+0x80486eb:	"/home/user/level8/.pass"
+```
 - The source address for copying is obtained from the second argument (0x18(%esp)).
 - The destination address for copying is obtained from the first argument (0x1c(%esp)).
 - The first strcpy call copies the content from the second argument (argv[2]) to the buffer pointed to by the first argument (buf).
