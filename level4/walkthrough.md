@@ -77,7 +77,7 @@ Non-debugging symbols:
 - allocates 0x218 = 536 bytes
 - reads input from user using fgets, storing input in buffer at 0x208(%ebp)
 - it calls function p passing as argument the user input retrieved with fget and stored in 0x208 
-- it compares the return of function p (the value stored in global variable m at address 0x8049810 that is moved to eax) to the value 0x1025544 (that is 16930116 in decimal) at <+59>
+- it compares the return of function p (the value stored in global variable m at address 0x8049810 that is moved to eax) to the value 0x1025544 (that is 16930116 in decimal) at <+59>-> `(gdb)x/s 0x8049810 = <m>: ""` also check `info variable`
 - a conditional jump (jne, jump if not equal) suggests that function n decide to execute further instructions based on the return of function p. Which instructions? If the comparison return true it launch a shell via a call to system
 ## Function p
 ```
