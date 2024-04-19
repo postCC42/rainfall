@@ -77,7 +77,8 @@ Non-debugging symbols:
 - allocates 0x218 = 536 bytes
 - reads input from user using fgets, storing input in buffer at 0x208(%ebp)
 - it calls function p passing as argument the user input retrieved with fget and stored in 0x208 
-- it makes some comparisons and a conditional jump (jne) that suggests that function n decide to execute further instructions based on the return of function p. Which instructions? If the comparison return true it launch a shell via a call to system
+- it compares the return of function p (the value stored in global variable m at address 0x8049810 that is moved to eax) to the value 0x1025544 (that is 16930116 in decimal) at <+59>
+- a conditional jump (jne, jump if not equal) suggests that function n decide to execute further instructions based on the return of function p. Which instructions? If the comparison return true it launch a shell via a call to system
 ## Function p
 ```
 (gdb) disas p
@@ -104,15 +105,15 @@ We can exploit a format string vulnerability. How?
 ## Toward the Solution
 - back to function n, it compares the content of the return of function p with the hexadecimal value 0x1025544, at this line `0x08048492 <+59>:  cmp    $0x1025544,%eax`. 0x1025544 is 16930116 in decimal.
 If we find a way for function p to return value 16930116n we get true and the system call is triggered. 
-
 ## Finding Buffer Position: 
 We first find the position of our buffer in memory by injecting format specifiers into the input string and observing the output.
 
 
 `python -c 'print "aaaa" + " %x" * 15' | ./level4`
+- we find `61616161` (4 times "a" in hexa) at position 12 after the output "aaaa" -> the format specifier %x without argument print the content of memory cases.
 
 ## Manipulating Return Value: 
-Once we know the buffer's position, we construct an input string that manipulates the return value of function p to 16930116. This is done by padding the memory address of the variable m and using the %n format specifier.
+Once we know the buffer's position (12), we construct an input string that manipulates the return value of function p to 16930116. This is done by padding the memory address of the variable m and using the %n format specifier.
 
 `python -c 'print "\x10\x98\x04\x08" + "%16930112d%12$n"' | ./level4`
 Here, "\x10\x98\x04\x08" represents the memory address of m, and %16930112d pads the address, while %12$n writes the number of characters processed so far to the address pointed to by the 12th argument.
