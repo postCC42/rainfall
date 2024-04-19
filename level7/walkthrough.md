@@ -122,7 +122,7 @@ Disassemblying main we find out that:
 
 ## Function m
 
-- it's not called anywhere but it handle the same variable located at 0x8049960 that puts print out in main function.
+- it's not called anywhere but it handle the same variable located at 0x8049960 that puts print out in main function (in <+195> passed to esp) .
 - if we analyze its content we discover that is a global variable called "c":
 ```
 (gdb) x/s 0x8049960
