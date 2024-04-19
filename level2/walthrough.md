@@ -170,7 +170,7 @@ The value of EIP is 0x37634136, which corresponds to the string "6Ac7" in the pa
 Fill up the buffer with 80 characters
 `payload = A*80 + address of system() + return address for system() + overwrite_ebp + adress of "/bin/sh"`
 
-We need to overwrite the value of ebp register, the saved EBP is used to restore the previous stack frame when the function returns. We can overwrite the saved EBP value on the stack with a known value, such as 0x90909090. This is done to ensure that the stack frame is properly aligned when the function returns, and to prevent any unintended consequences of overwriting the saved EBP value.
+We need to overwrite the value of ebp register, the saved EBP is used to restore the previous stack frame when the function returns. We can overwrite the saved EBP value on the stack with a fake return address to pass to the frame used by `system()`.
 
 Using little endian:
 - ret instruction address: `0x0804853e` - `\x3e\x85\x04\x08`

@@ -98,6 +98,7 @@ We need to write a total of 64 bytes and use the `%n` format to output to the va
 
 `%n` will write the size of our input at the address pointed by `%n`. For example, the following input : `AAAA%n`, means that we will write the value 4 (because the size of “AAAA” equals 4) at the address pointed by %n.
 - We can specify a postion to read/write on the stack with `%<num>$n`
+- We need to set the value of m to 64, so we add 60 bytes of arbitrary data.
 
 ```
 \x8c\x98\x04\x08   AAAAAAAA...AAAA    %4$n

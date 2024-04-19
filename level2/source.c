@@ -4,20 +4,19 @@
 
 void p() {
     char buffer[76];
-    int *var_10h;
+    int *a;
 
     fflush(stdout);
 
     gets(buffer);
 
-    // store the value pointed to by var_10h + 0x10 in var_10h
-    *var_10h = *((int*)var_10h + 0x10);
+    *a = __builtin_return_address(0);
 
     // perform bitwise AND operation on the value stored in var_10h
     // and check if the result is equal to 0xb0000000
-    if ((*var_10h & 0xb0000000) == 0xb0000000) {
+    if ((*a & 0xb0000000) == 0xb0000000) {
         // print the value stored in var_10h using the format string "%p"
-        printf("(%p)\n", *var_10h);
+        printf("(%p)\n", *a);
 
         // exit the program with a status of 1
         exit(1);
